@@ -1,7 +1,11 @@
 {
-  "name": "proyecto-tdd",
+  "name": "busqueda-tdd",
   "version": "1.0.0",
   "description": "Primer proyecto para probar TDD",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/astor-caso/busquedaTDD.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
