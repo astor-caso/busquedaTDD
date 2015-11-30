@@ -38,8 +38,8 @@ Para ficheros JSON (json = true), se localizará el par cuya propiedad "nombre" 
 >- json: sirve para indicar si el fichero está en formato JSON (true) o no (false, por defecto).
 
 >**Posibles valores devueltos**
->- El valor encontrado, como texto si el fichero no es JSON, o como un par {nombre, escuderia} si es JSON.
->- null, si el valor no se ha encontrado.
+>- Objeto Promise que lanza el resolve con el valor encontrado (texto si el fichero no es JSON, o un par {nombre, escuderia} si es JSON). En caso de no encontrarse coincidencia, se lanza el reject con un mensaje.
+>- null, si el fichero o el valor están vacíos.
 
 > **Ejemplos**
 >- buscar(fichero_inexistente, valor_a_buscar) => [null]
