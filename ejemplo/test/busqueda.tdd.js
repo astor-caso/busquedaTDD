@@ -148,6 +148,7 @@ function crearEscritor(fichero) {
 }
 
 
+
 // =================== BLOQUES DE PRUEBA ====================
 describe("Busqueda", function(){
 	describe("#leer()", function(){

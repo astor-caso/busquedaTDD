@@ -3,6 +3,7 @@ var fs = require("fs");
 
 // ======================= FUNCIONES ========================
 
+
 // ======================== EXPORTS =========================
 module.exports = {
 	// Función lectura de fichero (con Promise)
