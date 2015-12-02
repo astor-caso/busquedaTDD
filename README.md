@@ -17,15 +17,14 @@ El módulo de búsqueda contiene dos funciones:
 >- json: sirve para indicar si el fichero está en formato JSON (true) o no (false, por defecto).
 
 >**Posibles valores devueltos**
->- El contenido del fichero, si la lectura es correcta.
->- Cadena vacía (""), si el fichero está vacío o el formato JSON no es correcto.
->- null, si el fichero no existe.
+>- Objeto Promise que lanza el resolve con el contenido del fichero, si la lectura es correcta o con una cadena vacía (""), si el fichero está vacío o el formato JSON no es correcto.
+>- Objeto Promise que lanza el reject con un mensaje de error, si el fichero no existe.
 
 > **Ejemplos**
->- leer(fichero_inexistente) => [null]
->- leer(fichero_vacío) => [""]
->- leer(fichero_vacío, true) => [""]
->- leer(fichero_válido) => [contenido del fichero]
+>- leer(fichero_inexistente) => [error: Fichero no encontrado.]
+>- leer(fichero_vacío) => [contenido: ""]
+>- leer(fichero_vacío, true) => [contenido: ""]
+>- leer(fichero_válido) => [contenido: datos del fichero]
 
 
 * buscar(fichero, valor, json): Intenta localizar "valor" dentro de un fichero.
@@ -38,22 +37,23 @@ Para ficheros JSON (json = true), se localizará el par cuya propiedad "nombre" 
 >- json: sirve para indicar si el fichero está en formato JSON (true) o no (false, por defecto).
 
 >**Posibles valores devueltos**
+>- Promesa rechazada con mensaje de error, si la lectura falla.
+>- Promesa resulta con valor null, si el fichero o el valor están vacíos.
 >- Objeto Promise que lanza el resolve con el valor encontrado (texto si el fichero no es JSON, o un par {nombre, escuderia} si es JSON). En caso de no encontrarse coincidencia, se lanza el reject con un mensaje.
->- null, si el fichero o el valor están vacíos.
 
 > **Ejemplos**
->- buscar(fichero_inexistente, valor_a_buscar) => [null]
->- buscar(fichero_inexistente, valor_a_buscar, true) => [null]
->- buscar(fichero_vacío, valor_a_buscar) => [""]
->- buscar(fichero_vacío, valor_a_buscar, true) => [""]
->- buscar(fichero_válido, valor_a_buscar) => [primera palabra que encaje con valor_a_buscar]
->- buscar(fichero_válido, valor_a_buscar, true) => [par {nombre, escuderia} que contenga valor_a_buscar como nombre]
+>- buscar(fichero_inexistente, valor_a_buscar) => [error: Fichero no encontrado.]
+>- buscar(fichero_inexistente, valor_a_buscar, true) => [error: Fichero no encontrado.]
+>- buscar(fichero_vacío, valor_a_buscar) => [resultado: null]
+>- buscar(fichero_vacío, valor_a_buscar, true) => [resultado: null]
+>- buscar(fichero_válido, valor_a_buscar) => [resultado: primera palabra que encaje con valor_a_buscar]
+>- buscar(fichero_válido, valor_a_buscar, true) => [resultado: par {nombre, escuderia} que contenga valor_a_buscar como nombre]
 
 ## Pruebas unitarias ##
 El script de pruebas unitarias (ejemplo/test/busqueda.tdd.js) se ha creado para ser usado con Mocha y Chai.
 En los distintos casos de prueba se crearán y modificarán dos ficheros de prueba (uno para texto plano y otro para JSON) que después serán eliminados al finalizar cada conjunto de pruebas.
 
-En total hay 7 casos de prueba para la función "leer" y 14 para "buscar", con los que se intenta probar que la funcionalidad de ambas es la esperada.
+En total hay 7 casos de prueba para la función "leer" y 15 para "buscar", con los que se intenta probar que la funcionalidad de ambas es la esperada.
 
 
 
