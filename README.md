@@ -1,22 +1,60 @@
 # busquedaTDD
 Tarea grunt para hacer pruebas unitarias sobre un módulo de búsquedas en fichero
 
-# Descripción
-El módulo de búsqueda es un pequeño script que puede operar en ficheros de dos maneras: texto plano o JSON.
-## Ficheros texto plano ##
-Se debe indicar una cadena a buscar y el resultado podrá ser:
-- La primera palabra que contenga la cadena a buscar.
-- Valor null si no hay coincidencia.
+## Descripción ##
+La finalidad de este proyecto es aprender a trabajar con pruebas unitarias bajo NodeJS.
 
-> **Ejemplo**: Si tenemos el texto "Hoy hemos hecho un ejemplo" y buscamos "he", obtendremos "hemos" como resultado.
+Para ello, se ha construido un pequeño módulo de búsqueda (ejemplo/lib/busqueda.js) que puede operar con ficheros de dos maneras: texto plano o JSON.
 
-## Ficheros JSON ##
-Se espera que el formato de cada bloque sea {nombre: , escuderia: } para simplificar la funcionalidad ya que sólo se utilizará para aprender a trabajar con pruebas unitarias.
-Las búsquedas en este caso intentarán localizar un bloque que contenga el nombre indicado y devolverá:
-- El par {nombre, escuderia} con los valores correspondientes.
-- Valor null si no hay coincidencia.
+**Nota**: Para simplificar la funcionalidad de los ficheros JSON, se espera que el formato de cada bloque sea {nombre: , escuderia: } ya que sólo se trata de practicar con las pruebas unitarias.
 
-> **Ejemplo**: Si tenemos un fichero con [{nombre: "Antonio", escuderia: "Mercedes"}, {nombre: "Manolo", escuderia: "Sauber"}] y lanzamos una búsqueda por "Manolo", el resultado sería {nombre: "Manolo", escuderia: "Sauber"}.
+El módulo de búsqueda contiene dos funciones:
+
+* leer(fichero, json): Accede a un fichero y devuelve el contenido completo del mismo.
+
+>**Parámetros**
+>- fichero: ruta del fichero al que se va a acceder.
+>- json: sirve para indicar si el fichero está en formato JSON (true) o no (false, por defecto).
+
+>**Posibles valores devueltos**
+>- El contenido del fichero, si la lectura es correcta.
+>- Cadena vacía (""), si el fichero está vacío o el formato JSON no es correcto.
+>- null, si el fichero no existe.
+
+> **Ejemplos**
+>- leer(fichero_inexistente) => [null]
+>- leer(fichero_vacío) => [""]
+>- leer(fichero_vacío, true) => [""]
+>- leer(fichero_válido) => [contenido del fichero]
 
 
-Gracias a Gonzalo por descubrirme todo un mundo nuevo en el que sumergirme.
+* buscar(fichero, valor, json): Intenta localizar "valor" dentro de un fichero.
+En el caso de ficheros planos (json = false), la búsqueda se hará mediante un patrón para encontrar la primera palabra que contenga "valor".
+Para ficheros JSON (json = true), se localizará el par cuya propiedad "nombre" coincida con "valor".
+
+>**Parámetros**
+>- fichero: ruta del fichero al que se va a acceder.
+>- valor: es el valor a buscar dentro del fichero.
+>- json: sirve para indicar si el fichero está en formato JSON (true) o no (false, por defecto).
+
+>**Posibles valores devueltos**
+>- Objeto Promise que lanza el resolve con el valor encontrado (texto si el fichero no es JSON, o un par {nombre, escuderia} si es JSON). En caso de no encontrarse coincidencia, se lanza el reject con un mensaje.
+>- null, si el fichero o el valor están vacíos.
+
+> **Ejemplos**
+>- buscar(fichero_inexistente, valor_a_buscar) => [null]
+>- buscar(fichero_inexistente, valor_a_buscar, true) => [null]
+>- buscar(fichero_vacío, valor_a_buscar) => [""]
+>- buscar(fichero_vacío, valor_a_buscar, true) => [""]
+>- buscar(fichero_válido, valor_a_buscar) => [primera palabra que encaje con valor_a_buscar]
+>- buscar(fichero_válido, valor_a_buscar, true) => [par {nombre, escuderia} que contenga valor_a_buscar como nombre]
+
+## Pruebas unitarias ##
+El script de pruebas unitarias (ejemplo/test/busqueda.tdd.js) se ha creado para ser usado con Mocha y Chai.
+En los distintos casos de prueba se crearán y modificarán dos ficheros de prueba (uno para texto plano y otro para JSON) que después serán eliminados al finalizar cada conjunto de pruebas.
+
+En total hay 7 casos de prueba para la función "leer" y 14 para "buscar", con los que se intenta probar que la funcionalidad de ambas es la esperada.
+
+
+
+*Gracias a Gonzalo por descubrirme todo un mundo nuevo en el que sumergirme.*
